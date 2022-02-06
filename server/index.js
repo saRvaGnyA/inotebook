@@ -3,6 +3,7 @@ const connectToMongo = require("./db");
 require("dotenv").config();
 
 const app = express();
+app.use(express.json());
 connectToMongo();
 
 app.use("/api/auth", require("./routes/auth"));
