@@ -1,4 +1,7 @@
 const { body, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const JWTSecret = process.env.JWT_SECRET;
 
 module.exports.signUpValidationRules = () => {
   return [
@@ -23,4 +26,19 @@ module.exports.validate = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
   next();
+};
+
+module.exports.fetchUser = (req, res, next) => {
+  // get user from the JWT auth token and add the user ID to the request
+  const token = req.header("auth-token");
+  if (!token) {
+    res.status(401).send("Access denied, invalid token");
+  }
+  try {
+    const data = jwt.verify(token, JWTSecret);
+    req.user = data.user;
+    next();
+  } catch (error) {
+    res.status(401).send("Access denied, token cannot be identified");
+  }
 };

@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { validationResult } = require("express-validator");
 require("dotenv").config();
 
 // schema imports
@@ -72,6 +71,20 @@ module.exports.login = async (req, res) => {
     };
     const authToken = jwt.sign(payload, JWTSecret);
     res.json({ authToken });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Some internal server error occured",
+    });
+  }
+};
+
+module.exports.getUser = async (req, res) => {
+  try {
+    let userID = req.user.id;
+    const user = await User.findById(userID).select("-password");
+    res.send(user);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({
