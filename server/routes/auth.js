@@ -1,7 +1,11 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const User = require("./../models/User");
 const { body, validationResult } = require("express-validator");
 const router = express.Router();
+const JWTSecret = process.env.JWT_SECRET;
 
 // Create a user using: POST "/api/auth/createuser". No login required
 router.post(
@@ -25,12 +29,27 @@ router.post(
       if (user) {
         res.status(400).json({ error: "Please enter unique email" });
       }
+      const salt = await bcrypt.genSalt(10);
+      const secPass = await bcrypt.hash(req.body.password, salt);
       user = await User.create({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: secPass,
       });
-      res.json({ success: true, message: "User created successfully", user });
+
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      const authToken = jwt.sign(data, JWTSecret);
+
+      res.json({
+        success: true,
+        message: "User created successfully",
+        authToken,
+      });
     } catch (error) {
       console.error(error.message);
       res.status(500).json({ success: false, message: "Some error occured" });
