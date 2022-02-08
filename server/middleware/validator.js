@@ -42,3 +42,12 @@ module.exports.fetchUser = (req, res, next) => {
     res.status(401).send("Access denied, token cannot be identified");
   }
 };
+
+module.exports.noteCreationValidationRules = () => {
+  return [
+    body("title", "Enter a valid title").isLength({ min: 3 }),
+    body("description", "Description must be atleast 5 characters").isLength({
+      min: 5,
+    }),
+  ];
+};

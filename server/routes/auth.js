@@ -1,5 +1,4 @@
 const express = require("express");
-require("dotenv").config();
 
 // middleware imports
 const {
@@ -13,7 +12,6 @@ const {
 const { signUp, login, getUser } = require("./../controllers/controller-auth");
 
 const router = express.Router();
-const JWTSecret = process.env.JWT_SECRET;
 
 // Route 1: Create a user using: POST "/api/auth/createuser". No login required
 router.post("/createuser", signUpValidationRules(), validate, signUp);
