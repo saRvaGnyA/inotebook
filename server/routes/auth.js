@@ -52,7 +52,59 @@ router.post(
       });
     } catch (error) {
       console.error(error.message);
-      res.status(500).json({ success: false, message: "Some error occured" });
+      res.status(500).json({
+        success: false,
+        message: "Some internal server error occured",
+      });
+    }
+  }
+);
+
+// Authenticate a user using: POST "/api/auth/login". No login required
+router.post(
+  "/login",
+  [
+    body("email", "Enter a valid email").isEmail(),
+    body("password", "Password cannot be blank").exists(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        res
+          .status(400)
+          .json({ error: "Please try to login with correct credentials" });
+      }
+
+      const passwordCompare = await bcrypt.compare(password, user.password);
+      // bcrypt internally matches all the hashes, we need not hash the password and send it as an argument
+
+      if (!passwordCompare) {
+        res
+          .status(400)
+          .json({ error: "Please try to login with correct credentials" });
+      }
+
+      // same payload as before, and then send the JWT
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+      const authToken = jwt.sign(payload, JWTSecret);
+      res.json({ authToken });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({
+        success: false,
+        message: "Some internal server error occured",
+      });
     }
   }
 );
