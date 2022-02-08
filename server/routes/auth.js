@@ -1,11 +1,5 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { body, validationResult } = require("express-validator");
 require("dotenv").config();
-
-// schema imports
-const User = require("./../models/User");
 
 // middleware imports
 const {

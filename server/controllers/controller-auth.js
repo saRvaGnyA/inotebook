@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 require("dotenv").config();
 
 // schema imports
@@ -9,11 +9,6 @@ const User = require("./../models/User");
 const JWTSecret = process.env.JWT_SECRET;
 
 module.exports.signUp = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   // Check whether a user with same email exists already
   try {
     let user = await User.findOne({ email: req.body.email });
@@ -51,13 +46,8 @@ module.exports.signUp = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       res
