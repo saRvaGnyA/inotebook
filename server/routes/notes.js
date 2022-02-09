@@ -14,6 +14,7 @@ const {
   fetchAllNotes,
   addNote,
   updateNote,
+  deleteNote,
 } = require("./../controllers/controller-notes");
 
 // Route 1: Get all the notes using: GET "/api/notes/fetchallnotes". Login required
@@ -28,7 +29,10 @@ router.post(
   addNote
 );
 
-// Route 3: Update an existing note using: PUT "/api/notes/updatenote". Login required
+// Route 3: Update an existing note using: PATCH "/api/notes/updatenote". Login required
 router.patch("/updatenote/:id", fetchUser, updateNote);
+
+// Route 4: Delete an existing note using: DELETE "/api/notes/updatenote". Login required
+router.delete("/deletenote/:id", fetchUser, deleteNote);
 
 module.exports = router;

@@ -73,3 +73,24 @@ module.exports.updateNote = async (req, res) => {
     });
   }
 };
+
+module.exports.deleteNote = async (req, res) => {
+  try {
+    // Find the note to be deleted and delete it
+    let note = await Note.findById(req.params.id);
+
+    // Allow deletion only if user owns the note
+    if (note.user.toString() !== req.user.id) {
+      return res.status(401).send("Not authorized");
+    }
+
+    note = await Note.findByIdAndDelete(req.params.id);
+    res.json({ success: true, note });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Some internal server error occured",
+    });
+  }
+};
