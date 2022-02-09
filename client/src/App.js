@@ -6,6 +6,7 @@ import Home from "./components/pages/Home";
 import About from "./components/pages/About";
 import Users from "./components/pages/Users";
 import NoteState from "./context/notes/NoteState";
+import Alert from "./components/Alert";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <NoteState>
         <Router>
           <Navbar></Navbar>
+          <Alert props={{ message: "hello" }}></Alert>
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/about" element={<About />}></Route>
