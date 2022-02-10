@@ -7,12 +7,13 @@ const AddNote = () => {
   const [note, setNote] = useState({
     title: "",
     description: "",
-    tag: "default",
+    tag: "",
   });
 
   const handleClick = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "" });
   };
 
   const onChange = (e) => {
@@ -34,6 +35,9 @@ const AddNote = () => {
                 name="title"
                 placeholder="Title"
                 onChange={onChange}
+                required
+                minLength={5}
+                value={note.title}
               />
             </div>
           </div>
@@ -46,6 +50,9 @@ const AddNote = () => {
                 placeholder="Tag"
                 name="tag"
                 onChange={onChange}
+                required
+                minLength={5}
+                value={note.tag}
               />
             </div>
           </div>
@@ -58,6 +65,9 @@ const AddNote = () => {
                 placeholder="Description"
                 name="description"
                 onChange={onChange}
+                required
+                minLength={5}
+                value={note.description}
               />
             </div>
           </div>
@@ -66,6 +76,7 @@ const AddNote = () => {
               type="submit"
               className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
               onClick={handleClick}
+              disabled={note.title.length < 5 || note.description.length < 5}
             >
               Add
             </button>

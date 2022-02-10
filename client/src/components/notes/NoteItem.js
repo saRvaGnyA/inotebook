@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import NoteContext from "../../context/notes/NoteContext";
 
-const NoteItem = ({ note }) => {
+const NoteItem = ({ note, updateNote }) => {
   const context = useContext(NoteContext);
   const { deleteNote } = context;
   const handleClick = () => {
@@ -24,7 +24,12 @@ const NoteItem = ({ note }) => {
           <MdDelete className="text-rose-700 pointer"></MdDelete>
         </button>
         <button>
-          <MdEdit className="text-lime-600 pointer"></MdEdit>
+          <MdEdit
+            className="text-lime-600 pointer"
+            onClick={() => {
+              updateNote(note);
+            }}
+          ></MdEdit>
         </button>
       </div>
     </div>
