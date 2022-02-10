@@ -29,12 +29,12 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link
-                to="/about"
+              <a
+                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                 className="font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400"
               >
                 About
-              </Link>
+              </a>
             </li>
           </ul>
           {!localStorage.getItem("token") ? (
@@ -127,12 +127,12 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link
-                            to="/about"
+                          <a
+                            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                             className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                           >
                             About
-                          </Link>
+                          </a>
                         </li>
                         <li>
                           <Link
@@ -162,12 +162,12 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link
-                            to="/about"
+                          <a
+                            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                             className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                           >
                             About
-                          </Link>
+                          </a>
                         </li>
                         <li>
                           <Link
