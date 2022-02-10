@@ -2,6 +2,8 @@ import { useState } from "react";
 import NoteContext from "./NoteContext";
 
 const NoteState = (props) => {
+  const host = "http://inotebook-server-api.herokuapp.com";
+
   const notesInitial = [
     {
       _id: "6203ec50f6757dcfa0cf00ed",
@@ -33,8 +35,21 @@ const NoteState = (props) => {
   ];
 
   // Add a note
-  const addNote = (title, description, tag) => {
+  const addNote = async (title, description, tag) => {
     // TODO: API Call
+
+    const url = `${host}/api/notes/addnote`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjIwMzhlNTlmNDk2OTdlMjI4ODAwM2RjIn0sImlhdCI6MTY0NDQwMDkxM30.YR3OWKrZFJOhuACCTPJcmk4z9e6IrdBNkERGWRh8JeU",
+      },
+      body: JSON.stringify({ title, description, tag }),
+    });
+    const json = response.json();
+
     let note = {
       _id: "6203ec81f6723dcfa0cf00f3",
       user: "62038e59f49697e2288003dc",
@@ -55,7 +70,29 @@ const NoteState = (props) => {
   };
 
   // Edit a note
-  const editNote = () => {};
+  const editNote = async (id, title, description, tag) => {
+    // TODO: API Call
+    const url = `${host}/api/notes/updatenote/${id}`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjIwMzhlNTlmNDk2OTdlMjI4ODAwM2RjIn0sImlhdCI6MTY0NDQwMDkxM30.YR3OWKrZFJOhuACCTPJcmk4z9e6IrdBNkERGWRh8JeU",
+      },
+      body: JSON.stringify({ title, description, tag }),
+    });
+    const json = response.json();
+
+    for (let index = 0; index < notes.length; ++index) {
+      const element = notes[index];
+      if (element._id === id) {
+        element.title = title;
+        element.description = description;
+        element.tag = tag;
+      }
+    }
+  };
 
   const [notes, setNotes] = useState(notesInitial);
   return (
